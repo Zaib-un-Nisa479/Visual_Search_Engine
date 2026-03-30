@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ring Visual Search Engine</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 20px;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: #666;
+            transition: color 0.3s;
+        }
+
+        .nav-link:hover {
+            color: #667eea;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #667eea;
+            color: #667eea;
+        }
+
+        .btn-outline:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        /* Main Content */
+        .main {
+            padding: 3rem 0;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 2rem;
+        }
+
+        /* Upload Area */
+        .upload-area {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .upload-area:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .upload-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .upload-title {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .upload-text {
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Processing Section */
+        .processing-section {
+            text-align: center;
+            padding: 3rem;
+            background: white;
+            border-radius: 20px;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .loader {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Results Section */
+        .results-section {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: #333;
+        }
+
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .analysis-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .analysis-card h4 {
+            margin-bottom: 1rem;
+            color: #555;
+        }
+
+        .image-container {
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f0f0f0;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            max-height: 200px;
+            object-fit: contain;
+        }
+
+        .badge-container {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-top: 0.5rem;
+        }
+
+        .badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .badge.success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .badge.error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .badge.warning {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .stone-type {
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .metrics {
+            text-align: left;
+            padding: 1rem;
+        }
+
+        .metrics p {
+            margin: 0.5rem 0;
+            color: #555;
+        }
+
+        /* Match Grid */
+        .match-results {
+            margin-top: 2rem;
+        }
+
+        .match-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .match-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .match-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .match-card .match-image {
+            width: 100%;
+            height: 180px;
+            overflow: hidden;
+            background: #f5f5f5;
+        }
+
+        .match-card .match-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .match-info {
+            padding: 1rem;
+        }
+
+        .match-name {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .match-similarity {
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .match-price {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 0.5rem;
+        }
+
+        /* Error Section */
+        .error-section {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .error-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .error-title {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .error-message {
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 1rem 0;
+            margin-top: 3rem;
+        }
+
+        .footer .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .stats {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header .container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .hero-title {
+                font-size: 1.8rem;
+            }
+            
+            .analysis-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .match-grid {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            }
+            
+            .footer .container {
+                flex-direction: column;
+                gap: 0.5rem;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <h1 class="logo">💍 RingSearch AI</h1>
+            <nav class="nav">
+                <a href="#" class="nav-link active">Home</a>
+                <a href="#" class="nav-link">Catalog</a>
+                <a href="#" class="nav-link">About</a>
+                <button class="btn btn-outline" onclick="loadDatabase()">Load Database</button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <!-- Hero Section -->
+            <section class="hero">
+                <h2 class="hero-title">Visual Ring Search Engine</h2>
+                <p class="hero-subtitle">Upload a ring image and find similar designs instantly</p>
+                
+                <!-- Upload Area -->
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-content">
+                        <div class="upload-icon">📸</div>
+                        <h3 class="upload-title">Drag & Drop or Click to Upload</h3>
+                        <p class="upload-text">Supported formats: JPG, PNG, JPEG (Max 16MB)</p>
+                        <input type="file" id="fileInput" accept=".jpg,.jpeg,.png" hidden>
+                        <button class="btn btn-primary" onclick="document.getElementById('fileInput').click()">
+                            Choose Image
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Processing Section -->
+            <section class="processing-section" id="processingSection" style="display: none;">
+                <div class="loader">
+                    <div class="spinner"></div>
+                    <p>Processing your image...</p>
+                </div>
+            </section>
+
+            <!-- Results Section -->
+            <section class="results-section" id="resultsSection" style="display: none;">
+                <!-- Query Image Analysis -->
+                <div class="query-analysis">
+                    <h3 class="section-title">Query Image Analysis</h3>
+                    <div class="analysis-grid">
+                        <div class="analysis-card">
+                            <h4>Original Image</h4>
+                            <div class="image-container" id="originalImage">
+                                <p style="color: #999;">No image loaded</p>
+                            </div>
+                        </div>
+                        <div class="analysis-card">
+                            <h4>Processed Ring</h4>
+                            <div class="image-container" id="processedImage">
+                                <p style="color: #999;">Processing...</p>
+                            </div>
+                            <div class="badge-container">
+                                <span class="badge" id="ringBadge">---</span>
+                                <span class="badge" id="stoneBadge">---</span>
+                            </div>
+                        </div>
+                        <div class="analysis-card">
+                            <h4>Stone Region</h4>
+                            <div class="image-container" id="stoneRegion">
+                                <p style="color: #999;">No stone detected</p>
+                            </div>
+                            <p class="stone-type" id="stoneType"></p>
+                        </div>
+                        <div class="analysis-card">
+                            <h4>Quality Metrics</h4>
+                            <div class="metrics" id="qualityMetrics">
+                                <p style="color: #999;">No metrics available</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Match Results -->
+                <div class="match-results">
+                    <h3 class="section-title">Similar Rings Found</h3>
+                    <div class="match-grid" id="matchGrid">
+                        <p style="text-align: center; grid-column: 1/-1; color: #999;">No matches found</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Error Section -->
+            <section class="error-section" id="errorSection" style="display: none;">
+                <div class="error-content">
+                    <div class="error-icon">⚠️</div>
+                    <h3 class="error-title">Oops! Something went wrong</h3>
+                    <p class="error-message" id="errorMessage"></p>
+                    <button class="btn btn-primary" onclick="resetUpload()">Try Again</button>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 RingSearch AI. All rights reserved.</p>
+            <div class="stats" id="stats">📊 Loading statistics...</div>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script>
+        // Global functions for error handling
+        function resetUpload() {
+            const uploadArea = document.getElementById('uploadArea');
+            const errorSection = document.getElementById('errorSection');
+            const resultsSection = document.getElementById('resultsSection');
+            const fileInput = document.getElementById('fileInput');
+            
+            if (uploadArea) uploadArea.style.display = 'block';
+            if (errorSection) errorSection.style.display = 'none';
+            if (resultsSection) resultsSection.style.display = 'none';
+            if (fileInput) fileInput.value = '';
+            
+            // Clear images
+            const originalImage = document.getElementById('originalImage');
+            const processedImage = document.getElementById('processedImage');
+            const stoneRegion = document.getElementById('stoneRegion');
+            const matchGrid = document.getElementById('matchGrid');
+            
+            if (originalImage) originalImage.innerHTML = '<p style="color: #999;">No image loaded</p>';
+            if (processedImage) processedImage.innerHTML = '<p style="color: #999;">Processing...</p>';
+            if (stoneRegion) stoneRegion.innerHTML = '<p style="color: #999;">No stone detected</p>';
+            if (matchGrid) matchGrid.innerHTML = '<p style="text-align: center; grid-column: 1/-1; color: #999;">No matches found</p>';
+        }
+        
+        function loadDatabase() {
+            console.log('Loading database...');
+            fetch('/load_database', { method: 'POST' })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(`Database loaded! Stone rings: ${data.stone_count || 0}, Plain rings: ${data.plain_count || 0}`);
+                    } else {
+                        alert('Failed to load database');
+                    }
+                })
+                .catch(err => {
+                    console.error('Error loading database:', err);
+                    alert('Error loading database');
+                });
+        }
+        
+        // Load stats on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch('/stats')
+                .then(res => res.json())
+                .then(data => {
+                    const statsDiv = document.getElementById('stats');
+                    if (statsDiv) {
+                        statsDiv.innerHTML = `📊 Catalog: ${data.catalog_count || 0} rings available`;
+                    }
+                })
+                .catch(err => {
+                    console.error('Error loading stats:', err);
+                    const statsDiv = document.getElementById('stats');
+                    if (statsDiv) statsDiv.innerHTML = '📊 Statistics unavailable';
+                });
+        });
+    </script>
+</body>
+</html>
