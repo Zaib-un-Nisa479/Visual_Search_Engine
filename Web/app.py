@@ -649,6 +649,20 @@ def load_database():
         'plain_count': 0
     })
 
+@app.route('/catalog')
+def get_catalog():
+    """Get all catalog images."""
+    try:
+        catalog_images = load_catalog_images()
+        return jsonify({
+            'success': True,
+            'catalog': catalog_images,
+            'total': len(catalog_images)
+        })
+    except Exception as e:
+        print(f"❌ Error loading catalog: {e}")
+        return jsonify({'success': False, 'error': str(e)}), 500
+
 if __name__ == '__main__':
     print("\n" + "="*50)
     print("🚀 Ring Visual Search Engine")

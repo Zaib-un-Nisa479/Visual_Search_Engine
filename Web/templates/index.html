@@ -385,6 +385,207 @@
             opacity: 0.8;
         }
 
+        /* Catalog Section */
+        .catalog-section {
+            padding: 4rem 0;
+            display: none;
+        }
+
+        .catalog-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .catalog-header h2 {
+            font-size: 2.2rem;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .catalog-header p {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .catalog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+            padding: 0 0 3rem 0;
+        }
+
+        .catalog-item {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .catalog-item:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .catalog-item-image {
+            width: 100%;
+            height: 220px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .catalog-item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .catalog-item-info {
+            padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .catalog-item-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .catalog-item-btn {
+            align-self: flex-start;
+            padding: 0.5rem 1rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            margin-top: 1rem;
+        }
+
+        .catalog-item-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        /* About Section */
+        .about-section {
+            padding: 4rem 0;
+            display: none;
+        }
+
+        .about-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .about-header h2 {
+            font-size: 2.2rem;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .about-header p {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.9);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .about-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .about-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2.5rem 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .about-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .about-card-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+
+        .about-card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .about-card-content {
+            color: #666;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .about-card-list {
+            text-align: left;
+            margin-top: 1rem;
+        }
+
+        .about-card-list li {
+            margin: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .about-card-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        /* Section Navigation */
+        .section-nav {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin: 3rem 0;
+            flex-wrap: wrap;
+        }
+
+        .section-nav .btn {
+            padding: 0.75rem 1.5rem;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .header .container {
@@ -409,6 +610,27 @@
                 gap: 0.5rem;
                 text-align: center;
             }
+
+            .catalog-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 1.5rem;
+            }
+
+            .about-header h2 {
+                font-size: 1.8rem;
+            }
+
+            .about-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .catalog-header h2 {
+                font-size: 1.8rem;
+            }
+
+            .section-nav {
+                margin: 2rem 0;
+            }
         }
     </style>
 </head>
@@ -418,9 +640,9 @@
         <div class="container">
             <h1 class="logo">💍 RingSearch AI</h1>
             <nav class="nav">
-                <a href="#" class="nav-link active">Home</a>
-                <a href="#" class="nav-link">Catalog</a>
-                <a href="#" class="nav-link">About</a>
+                <a href="#" onclick="showSection('home'); return false;" class="nav-link active" data-section="home">Home</a>
+                <a href="#" onclick="showSection('catalog'); return false;" class="nav-link" data-section="catalog">Catalog</a>
+                <a href="#" onclick="showSection('about'); return false;" class="nav-link" data-section="about">About</a>
                 <button class="btn btn-outline" onclick="loadDatabase()">Load Database</button>
             </nav>
         </div>
@@ -510,6 +732,77 @@
                     <h3 class="error-title">Oops! Something went wrong</h3>
                     <p class="error-message" id="errorMessage"></p>
                     <button class="btn btn-primary" onclick="resetUpload()">Try Again</button>
+                </div>
+            </section>
+
+            <!-- Catalog Section -->
+            <section class="catalog-section" id="catalogSection">
+                <div class="catalog-header">
+                    <h2>✨ Our Ring Catalog</h2>
+                    <p>Explore our collection of beautifully designed rings</p>
+                </div>
+                <div class="catalog-grid" id="catalogGrid">
+                    <p style="grid-column: 1/-1; text-align: center; color: #999;">Loading catalog...</p>
+                </div>
+                <div class="section-nav">
+                    <button class="btn btn-primary" onclick="showSection('home')">Back to Search</button>
+                    <button class="btn btn-outline" onclick="showSection('about')">About Us</button>
+                </div>
+            </section>
+
+            <!-- About Section -->
+            <section class="about-section" id="aboutSection">
+                <div class="about-header">
+                    <h2>💫 About RingSearch AI</h2>
+                    <p>Discover the inspiration, technology, and commitment behind our visual search engine</p>
+                </div>
+                <div class="about-cards">
+                    <!-- Inspiration Card -->
+                    <div class="about-card">
+                        <div class="about-card-icon">💡</div>
+                        <h3 class="about-card-title">Our Inspiration</h3>
+                        <div class="about-card-content">
+                            <p>RingSearch AI was born from a passion for jewelry and cutting-edge technology. We believe that finding the perfect ring design should be effortless and intuitive.</p>
+                            <p style="margin-top: 1rem;">Our vision is to revolutionize how customers discover and compare ring designs through intelligent visual recognition technology.</p>
+                        </div>
+                    </div>
+
+                    <!-- How It Works Card -->
+                    <div class="about-card">
+                        <div class="about-card-icon">⚙️</div>
+                        <h3 class="about-card-title">How It Works</h3>
+                        <div class="about-card-content">
+                            <ul class="about-card-list">
+                                <li>Upload your ring image</li>
+                                <li>AI analyzes the ring design</li>
+                                <li>Extracts key features & patterns</li>
+                                <li>Matches with catalog</li>
+                                <li>Instant results & recommendations</li>
+                            </ul>
+                            <p style="margin-top: 1rem; font-size: 0.9rem; color: #999;">Using advanced computer vision and deep learning algorithms</p>
+                        </div>
+                    </div>
+
+                    <!-- Orders & Support Card -->
+                    <div class="about-card">
+                        <div class="about-card-icon">📦</div>
+                        <h3 class="about-card-title">Orders & Support</h3>
+                        <div class="about-card-content">
+                            <ul class="about-card-list">
+                                <li>Fast & secure ordering</li>
+                                <li>Custom ring design service</li>
+                                <li>Free shipping on all orders</li>
+                                <li>30-day satisfaction guarantee</li>
+                                <li>24/7 customer support</li>
+                            </ul>
+                            <p style="margin-top: 1rem; font-size: 0.9rem; color: #999;">We're here to make your experience exceptional</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-nav">
+                    <button class="btn btn-primary" onclick="showSection('home')">Back to Search</button>
+                    <button class="btn btn-outline" onclick="showSection('catalog')">View Catalog</button>
                 </div>
             </section>
         </div>

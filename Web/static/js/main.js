@@ -297,6 +297,103 @@ async function updateStats() {
     }
 }
 
+// Section Navigation
+function showSection(sectionName) {
+    console.log('🔄 Switching to section:', sectionName);
+    
+    // Hide all sections
+    const homeSection = document.querySelector('.hero');
+    const catalogSection = document.getElementById('catalogSection');
+    const aboutSection = document.getElementById('aboutSection');
+    const uploadArea = document.getElementById('uploadArea');
+    const resultsSection = document.getElementById('resultsSection');
+    const errorSection = document.getElementById('errorSection');
+    const processingSection = document.getElementById('processingSection');
+    
+    if (homeSection) homeSection.style.display = 'none';
+    if (catalogSection) catalogSection.style.display = 'none';
+    if (aboutSection) aboutSection.style.display = 'none';
+    if (uploadArea) uploadArea.style.display = 'none';
+    if (resultsSection) resultsSection.style.display = 'none';
+    if (errorSection) errorSection.style.display = 'none';
+    if (processingSection) processingSection.style.display = 'none';
+    
+    // Update navigation links
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.classList.remove('active');
+    });
+    const activeLink = document.querySelector(`[data-section="${sectionName}"]`);
+    if (activeLink) activeLink.classList.add('active');
+    
+    // Show selected section
+    switch(sectionName) {
+        case 'home':
+            if (homeSection) homeSection.style.display = 'block';
+            if (uploadArea) uploadArea.style.display = 'block';
+            resetUpload();
+            break;
+        case 'catalog':
+            if (catalogSection) catalogSection.style.display = 'block';
+            loadCatalog();
+            break;
+        case 'about':
+            if (aboutSection) aboutSection.style.display = 'block';
+            break;
+    }
+    
+    // Scroll to top
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Load Catalog Function
+async function loadCatalog() {
+    console.log('📂 Loading catalog...');
+    const catalogGrid = document.getElementById('catalogGrid');
+    
+    if (!catalogGrid) return;
+    
+    catalogGrid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #999;">Loading catalog...</p>';
+    
+    try {
+        const response = await fetch('/catalog');
+        const data = await response.json();
+        
+        console.log('📂 Catalog response:', data);
+        
+        if (data.success && data.catalog && data.catalog.length > 0) {
+            let catalogHtml = '';
+            
+            data.catalog.forEach((item, index) => {
+                catalogHtml += `
+                    <div class="catalog-item">
+                        <div class="catalog-item-image">
+                            <img src="${item.image}" alt="${item.name}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22250%22 height=%22220%22%3E%3Crect fill=%22%23667eea%22 width=%22250%22 height=%22220%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 font-size=%2220%22 fill=%22white%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22%3E${item.name}%3C/text%3E%3C/svg%3E'">
+                        </div>
+                        <div class="catalog-item-info">
+                            <div class="catalog-item-name">${item.name}</div>
+                            <button class="catalog-item-btn" onclick="selectCatalogItem('${item.name}')">View Details</button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            catalogGrid.innerHTML = catalogHtml;
+            console.log(`✅ Loaded ${data.catalog.length} items`);
+        } else {
+            catalogGrid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #999;">No items in catalog yet. Upload images to the data/catalog folder.</p>';
+        }
+    } catch (error) {
+        console.error('❌ Error loading catalog:', error);
+        catalogGrid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: #f44336;">Error loading catalog: ${error.message}</p>`;
+    }
+}
+
+// Select Catalog Item
+function selectCatalogItem(itemName) {
+    console.log('📍 Selected item:', itemName);
+    alert(`You selected: ${itemName}\n\nThis item is now available for customization and ordering!`);
+}
+
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', () => {
     console.log('🚀 Page loaded, initializing...');
