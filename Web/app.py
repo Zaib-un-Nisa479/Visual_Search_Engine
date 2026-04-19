@@ -670,4 +670,5 @@ if __name__ == '__main__':
     print(f"📁 Catalog folder: {app.config['CATALOG_FOLDER']}")
     print(f"📁 Upload folder: {app.config['UPLOAD_FOLDER']}")
     print("="*50 + "\n")
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    port = int(os.getenv('PORT', 7860))
+    app.run(debug=False, host='0.0.0.0', port=port)
