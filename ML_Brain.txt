@@ -1,0 +1,8 @@
+Project Brain:
+My project utilizes the VGG16 architecture as a Feature Extractor. While the model uses pre-trained weights to understand visual geometry, I developed a custom indexing pipeline.
+
+I processed a specific jewelry catalog to extract 4096-dimensional structural embeddings.
+
+I implemented a Similarity Engine using Python to compare these embeddings.
+
+This approach allows the system to identify ring designs by shape while ignoring variable factors like gemstone color, which a standard pre-trained classifier cannot do on its own.
